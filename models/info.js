@@ -1,33 +1,27 @@
 const mongoose = require('mongoose')
 
-const categorySchema = new mongoose.Schema(
+const infoSchema = new mongoose.Schema(
   {
-    name: {
+    siteName: {
       type: String,
       required: true
     },
-    photo: {
+    phone: {
       type: String,
       required: true
     },
-    description: {
+    email: {
       type: String,
       required: true
     },
-    adminAdded: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+    address: {
+      type: String,
       required: true
     },
     adminUpdated: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: false
-    },
-    status: {
-      type: String,
-      enum: ['active', 'suspended', 'deleted'],
-      required: true
     },
     notes: {
       type: String,
@@ -39,6 +33,6 @@ const categorySchema = new mongoose.Schema(
   }
 )
 
-const Category = mongoose.model('Category', categorySchema)
+const Info = mongoose.model('Info', infoSchema)
 
-module.exports = Category
+module.exports = Info

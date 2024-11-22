@@ -22,21 +22,14 @@ mongoose.connection.on('connected', () => {
   console.log(`connected to MongoDB ${mongoose.connection.name}`)
 })
 
-// import models
-/* const User = require('./models/user.js')
-const Customer = require('./models/customer.js')
-const Category = require('./models/category.js')
-const Car = require('./models/car.js')
-const Booking = require('./models/booking.js') */
-
 // import the routes
-// const routes = require('./routes/routes.js')
+const routes = require('./routes/routes.js')
 
 // Log the HTTP requests
 app.use(express.urlencoded({ extended: false }))
 app.use(methodOverride('_method'))
 app.use(morgan('dev'))
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'assets')))
 
 // Managing sessions
 app.use(
@@ -53,7 +46,7 @@ app.use(
 // use middlewares, if any
 
 // use the route file
-//app.use(routes)
+app.use(routes)
 
 app.get('*', function (req, res) {
   res.status(404).send(`Error: page not found.`)

@@ -28,6 +28,7 @@ const customerSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+      enum: ['active', 'suspended', 'deleted'],
       required: true
     },
     notes: {
