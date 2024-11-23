@@ -22,6 +22,8 @@ mongoose.connection.on('connected', () => {
   console.log(`connected to MongoDB ${mongoose.connection.name}`)
 })
 
+app.use(express.static(path.join(__dirname, 'assets')))
+
 // import the routes
 const routes = require('./routes/routes.js')
 
@@ -29,7 +31,6 @@ const routes = require('./routes/routes.js')
 app.use(express.urlencoded({ extended: false }))
 app.use(methodOverride('_method'))
 app.use(morgan('dev'))
-app.use(express.static(path.join(__dirname, 'assets')))
 
 // Managing sessions
 app.use(
