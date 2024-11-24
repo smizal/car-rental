@@ -7,12 +7,13 @@ const morgan = require('morgan')
 const multer = require('multer')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
+const passUserInfo = require('./middleware/pass-user-info.js')
+const path = require('path')
 
 // initialize some parameters
 const app = express()
 const port = process.env.PORT ? process.env.PORT : 3003
 const upload = multer({ dest: 'img/' })
-const path = require('path')
 
 // add required middlewares, if any
 
@@ -45,6 +46,7 @@ app.use(
 )
 
 // use middlewares, if any
+app.use(passUserInfo)
 
 // use the route file
 app.use(routes)

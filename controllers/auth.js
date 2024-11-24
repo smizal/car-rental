@@ -1,13 +1,14 @@
 const { response } = require('express')
 const User = require('../models/user.js')
 const Info = require('../models/info.js')
-const siteInfo = Info.find({})
+
 const bcrypt = require('bcrypt')
 
 const show = async (req, res) => {
-  const userType = req.params.userType
-  const operation = req.params.operation
   try {
+    const siteInfo = await Info.findOne({})
+    const userType = req.params.userType
+    const operation = req.params.operation
     if (userType === 'admin') {
       const usersCount = await User.countDocuments({})
       if (operation === 'login') {
@@ -48,7 +49,35 @@ const show = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  console.log('login')
+  try {
+    const userType = req.params.userType
+    const userInDatabase = await User.findOne({ username: req.body.username })
+    if (!userInDatabase) {
+      return res.send('Login failed. Please try again.')
+    }
+
+    // Check if the password is correct, compare them
+    const validPassword = bcrypt.compareSync(
+      req.body.password,
+      userInDatabase.password
+    )
+    if (!validPassword) {
+      return res.send('Login failed. Please try again.')
+    }
+
+    // Save any required data in session
+    req.session.userInfo = {
+      username: userInDatabase.username,
+      _id: userInDatabase._id,
+      role: userInDatabase.role
+    }
+    req.session.save(() => {
+      console.log(req.session.userInfo)
+      res.redirect(`/${userType}`)
+    })
+  } catch (error) {
+    return res.send(error)
+  }
 }
 
 const create = async (req, res) => {
@@ -66,17 +95,22 @@ const create = async (req, res) => {
     // Save the user data in database
     const user = await User.create(req.body)
     const info = await Info.create(req.body)
-    req.session.user = {
+    req.session.userInfo = {
       username: user.username,
       _id: user._id,
       role: user.role
     }
     req.session.save(() => {
-      res.redirect('/auth/admin/login')
+      res.redirect('/admin')
     })
   } catch (error) {
     return res.send(error)
   }
 }
 
-module.exports = { login, create, show }
+const index = async (req, res) => {
+  const siteInfo = await Info.findOne({})
+  res.render('admin/index.ejs', { siteInfo })
+}
+
+module.exports = { login, create, show, index }
