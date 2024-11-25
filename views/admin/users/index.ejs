@@ -28,7 +28,29 @@
               <td><%= index+1 %></td>
               <td><%= user.name %></td>
               <td><%= user.role %></td>
-              <td><%= user.status %></td>
+              <td>
+                <% if (user.role != 'superadmin' && user.status === 'deleted') {
+                %>
+                <form>
+                  <button>deleted</button>
+                </form>
+                <% } else if (user.role != 'superadmin' && user.status ===
+                'active') { %>
+                <form
+                  action="/admin/users/status/suspended/<%= user._id %>?_method=PUT"
+                  method="POST"
+                >
+                  <button type="submit">suspend</button>
+                </form>
+                <% } else if (user.role != 'superadmin'){ %>
+                <form
+                  action="/admin/users/status/active/<%= user._id %>?_method=PUT"
+                  method="POST"
+                >
+                  <button type="submit">Activate</button>
+                </form>
+                <% } %>
+              </td>
               <td>
                 <% if(user.role != 'superadmin') { %>
                 <form
@@ -37,6 +59,8 @@
                 >
                   <button type="submit">Delete</button>
                 </form>
+                <a href="/admin/users/edit/<%= user._id %>">Edit</a>
+                <a href="/admin/users/report/<%= user._id %>">Report</a>
                 <% } %>
               </td>
             </tr>

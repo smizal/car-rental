@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/bootstrap.css" />
     <script defer src="/js/bootstrap.bundle.js"></script>
-    <title><%= siteInfo.siteName %> | Add User</title>
+    <title><%= siteInfo.siteName %> | Update User</title>
   </head>
   <body>
     <%- userInfo.role==='admin'? include('../../partials/backend_navbar.ejs'):
@@ -13,8 +13,8 @@
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-4 bg-body-secondary p-3 rounded">
-          <form action="/admin/users" method="POST">
-            <div class="h1">Add New User</div>
+          <form action="/admin/users/<%= user._id %>?_method=PUT" method="POST">
+            <div class="h1">Update User</div>
             <div class="form-floating mb-3">
               <input
                 type="text"
@@ -22,6 +22,7 @@
                 id="name"
                 name="name"
                 placeholder="User Full Name"
+                value="<%= user.name %>"
                 required
               />
               <label for="name">User Full Name</label>
@@ -34,33 +35,35 @@
                 id="username"
                 name="username"
                 placeholder="Username"
+                value="<%= user.username %>"
                 required
+                disabled
               />
               <label for="username">Username</label>
             </div>
 
             <div class="form-floating mb-3">
+              <div class="form-text">leave it black for no change</div>
               <input
                 class="form-control"
                 type="password"
                 name="password"
                 id="password"
                 placeholder="password"
-                required
               />
               <label for="password">Password</label>
             </div>
 
             <div class="form-floating mb-3">
               <select class="form-select" name="role" id="role">
-                <option value="admin">Admin</option>
-                <option value="super">Super Admin</option>
+                <option value="admin" <%= user.role==='admin'? "selected": '' %>>Admin</option>
+                <option value="super" <%= user.role==='super'? "selected": '' %>>Super Admin</option>
               </select>
               <label for="password">Role</label>
             </div>
             <div class="row mt-5 justify-content-around">
               <button class="col-4 btn btn-primary" type="submit">
-                Add user
+                Update user
               </button>
               <button class="col-4 btn btn-secondary" type="reset">
                 reset

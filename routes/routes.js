@@ -11,10 +11,12 @@ route.get('/admin', authController.index)
 
 // user controller
 route.get('/admin/users', userController.userIndex)
-route.get('/admin/users/add', userController.newUser)
+route.get('/admin/users/add', userController.newUserForm)
+route.get('/admin/users/edit/:userId', userController.updateUserForm)
 route.post('/admin/users', userController.createUser)
 route.get('/admin/users/report/:userId', userController.userReport)
 route.delete('/admin/users/:userId', userController.deleteUser)
+route.put('/admin/users/status/:state/:userId', userController.status)
 route.put('/admin/users/:userId', userController.updateUser)
 
 module.exports = route
