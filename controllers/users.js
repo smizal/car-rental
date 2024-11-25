@@ -81,6 +81,7 @@ const updateUser = async (req, res) => {
       delete req.body.password
     }
     delete req.body.username
+
     req.body.adminAdded = req.session.userInfo._id
     const userInDatabase = await User.findByIdAndUpdate(
       req.params.userId,
