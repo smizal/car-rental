@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <script defer src="/js/bootstrap.bundle.js"></script>
+    <title><%= siteInfo.siteName %> | Categories</title>
+  </head>
+  <body>
+    <%- userInfo.role==='admin'? include('../../partials/backend_navbar.ejs'):
+    include('../../partials/super_navbar.ejs') %>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <table id="myTable" class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="col-1">#</th>
+              <th scope="col" class="col-2">Image</th>
+              <th scope="col" class="col-3">Name</th>
+              <th scope="col" class="col-3">Category</th>
+              <th scope="col" class="col-1">Status</th>
+              <th scope="col" class="col-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <% allCars.forEach((car, index)=>{ %>
+            <tr>
+              <td><%= index+1 %></td>
+              <td>
+                <img
+                  class="img-thumbnail"
+                  src="/uploads/cars/<%= car.photo %>"
+                  alt=""
+                />
+              </td>
+              <td><%= car.name %></td>
+              <td><%= car.category.name %></td>
+              <td>
+                <% if (car.status === 'active') { %>
+                <form
+                  action="/admin/cars/status/suspended/<%= car._id %>?_method=PUT"
+                  method="POST"
+                >
+                  <button class="btn btn-primary" type="submit">suspend</button>
+                </form>
+                <% } else { %>
+                <form
+                  action="/admin/cars/status/active/<%= car._id %>?_method=PUT"
+                  method="POST"
+                >
+                  <button class="btn btn-danger" type="submit">Activate</button>
+                </form>
+                <% } %>
+              </td>
+              <td>
+                <div class="btn-group">
+                  <form
+                    action="/admin/cars/<%= car._id %>?_method=DELETE"
+                    method="post"
+                  >
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                  </form>
+                  <button type="button" class="btn btn-primary">
+                    <a
+                      class="text-white text-decoration-none"
+                      href="/admin/cars/edit/<%= car._id %>"
+                      >Edit</a
+                    >
+                  </button>
+                  <button type="button" class="btn btn-secondary">
+                    <a
+                      class="text-white text-decoration-none"
+                      href="/admin/cars/report/<%= car._id %>"
+                      >Report</a
+                    >
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

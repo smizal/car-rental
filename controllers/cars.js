@@ -2,15 +2,16 @@ const { response } = require('express')
 const Category = require('../models/category.js')
 const Info = require('../models/info.js')
 const User = require('../models/user.js')
+const Car = require('../models/car.js')
 const fs = require('fs')
 
 const index = async (req, res) => {
   try {
     const siteInfo = await Info.findOne({})
-    const allCategories = await Category.find({
+    const allCars = await Car.find({
       $or: [{ status: 'active' }, { status: 'suspended' }]
-    })
-    res.render('admin/categories/index.ejs', { siteInfo, allCategories })
+    }).populate('category')
+    res.render('admin/cars/index.ejs', { siteInfo, allCars })
   } catch (error) {
     return res.send(error)
   }
@@ -19,7 +20,9 @@ const index = async (req, res) => {
 const newForm = async (req, res) => {
   try {
     const siteInfo = await Info.findOne({})
-    res.render('admin/categories/new.ejs', { siteInfo })
+    const allCategories = await Category.find({ status: 'active' })
+
+    res.render('admin/cars/new.ejs', { siteInfo, allCategories })
   } catch (error) {
     return res.send(error)
   }
@@ -28,8 +31,10 @@ const newForm = async (req, res) => {
 const editForm = async (req, res) => {
   try {
     const siteInfo = await Info.findOne({})
-    const category = await Category.findById(req.params.catId)
-    res.render('admin/categories/edit.ejs', { siteInfo, category })
+    const allCategories = await Category.find({ status: 'active' })
+    const car = await Car.findById(req.params.carId)
+
+    res.render('admin/cars/edit.ejs', { siteInfo, allCategories, car })
   } catch (error) {
     return res.send(error)
   }
@@ -38,13 +43,13 @@ const editForm = async (req, res) => {
 const create = async (req, res) => {
   try {
     // First, get the user from the database
-    const categoryInDatabase = await Category.findOne({
+    const carInDatabase = await Car.findOne({
       name: req.body.name
     })
 
     // Check if there is existing user with same username !
-    if (categoryInDatabase) {
-      return res.send('category already published.')
+    if (carInDatabase) {
+      return res.send('car already published.')
     }
 
     // Save the user data in database
@@ -52,22 +57,22 @@ const create = async (req, res) => {
     req.body.adminAdded = req.session.userInfo._id
     req.body.photo = req.file.originalname
 
-    const category = await Category.create(req.body)
+    const car = await Car.create(req.body)
 
-    const photoExt = category.photo.split('.')
-    const newPhotoName = category._id + '.' + photoExt[photoExt.length - 1]
+    const photoExt = car.photo.split('.')
+    const newPhotoName = car._id + '.' + photoExt[photoExt.length - 1]
 
     fs.renameSync(
-      `./assets/uploads/categories/${category.photo}`,
-      `./assets/uploads/categories/${newPhotoName}`
+      `./assets/uploads/cars/${car.photo}`,
+      `./assets/uploads/cars/${newPhotoName}`
     )
 
-    await Category.findByIdAndUpdate(category._id, {
+    await Car.findByIdAndUpdate(car._id, {
       photo: newPhotoName
     })
 
     // redirect to users list
-    res.redirect('/admin/categories')
+    res.redirect('/admin/cars')
   } catch (error) {
     return res.send(error)
   }
@@ -75,11 +80,11 @@ const create = async (req, res) => {
 
 const deleting = async (req, res) => {
   try {
-    req.body.adminAdded = await Category.findByIdAndUpdate(req.params.catId, {
+    req.body.adminAdded = await Car.findByIdAndUpdate(req.params.carId, {
       status: 'deleted',
       adminUpdated: req.session.userInfo._id
     })
-    res.redirect(`/admin/categories`)
+    res.redirect(`/admin/cars`)
   } catch (error) {
     return res.send(error)
   }
@@ -90,24 +95,24 @@ const updating = async (req, res) => {
     if (req.file) {
       const photoExt = req.file.originalname.split('.')
       const newPhotoName =
-        req.params.catId + '.' + photoExt[photoExt.length - 1]
+        req.params.carId + '.' + photoExt[photoExt.length - 1]
 
       fs.renameSync(
-        `./assets/uploads/categories/${req.file.originalname}`,
-        `./assets/uploads/categories/${newPhotoName}`
+        `./assets/uploads/cars/${req.file.originalname}`,
+        `./assets/uploads/cars/${newPhotoName}`
       )
 
       req.body.photo = newPhotoName
     }
     req.body.adminAdded = req.session.userInfo._id
 
-    const categoryInDatabase = await Category.findByIdAndUpdate(
-      req.params.catId,
+    const carInDatabase = await Car.findByIdAndUpdate(
+      req.params.carId,
       req.body
     )
 
     // redirect to users list
-    res.redirect('/admin/categories')
+    res.redirect('/admin/cars')
   } catch (error) {
     return res.send(error)
   }
@@ -115,8 +120,8 @@ const updating = async (req, res) => {
 
 const reports = async (req, res) => {
   try {
-    const siteInfo = await Category.findOne({})
-    return res.send('update page')
+    const siteInfo = await Info.findOne({})
+    return res.send('report page')
   } catch (error) {
     return res.send(error)
   }
@@ -124,11 +129,11 @@ const reports = async (req, res) => {
 
 const status = async (req, res) => {
   try {
-    req.body.adminAdded = await Category.findByIdAndUpdate(req.params.catId, {
+    req.body.adminAdded = await Car.findByIdAndUpdate(req.params.carId, {
       status: req.params.state,
       adminUpdated: req.session.userInfo._id
     })
-    res.redirect(`/admin/categories`)
+    res.redirect(`/admin/cars`)
   } catch (error) {
     return res.send(error)
   }

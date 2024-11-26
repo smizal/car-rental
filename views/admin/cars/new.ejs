@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <script defer src="/js/bootstrap.bundle.js"></script>
+    <title><%= siteInfo.siteName %> | Add Car</title>
+  </head>
+  <body>
+    <%- userInfo.role==='admin'? include('../../partials/backend_navbar.ejs'):
+    include('../../partials/super_navbar.ejs') %>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-4 bg-body-secondary p-3 rounded">
+          <form
+            action="/admin/cars"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            <div class="h1 mb-4">Add New Car</div>
+            <div class="mb-3">
+              <label for="name" class="form-label">Car Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                placeholder="Category Name"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                name="description"
+                id="description"
+                required
+              ></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="color" class="form-label">Color</label>
+              <input
+                type="text"
+                class="form-control"
+                id="color"
+                name="color"
+                placeholder="Car color"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="model" class="form-label">Model</label>
+              <input
+                type="text"
+                class="form-control"
+                id="model"
+                name="model"
+                placeholder="Car model"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="seats" class="form-label">No. of Seats</label>
+              <input
+                type="text"
+                class="form-control"
+                id="seats"
+                name="seats"
+                placeholder="Car seats"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="price" class="form-label">Price per day</label>
+              <input
+                type="text"
+                class="form-control"
+                id="price"
+                name="price"
+                placeholder="Car price"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="price" class="form-label">Car Category</label>
+              <select class="form-select" name="category" id="category">
+                <% allCategories.forEach((category)=>{%>
+                <option value="<%= category._id %>">
+                  <%= category.name %>
+                </option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="photo" class="form-label">Car Photo</label>
+              <input
+                class="form-control"
+                type="file"
+                id="photo"
+                name="photo"
+                required
+              />
+            </div>
+
+            <div class="row mt-5 justify-content-around">
+              <button class="col-4 btn btn-primary" type="submit">
+                Add Car
+              </button>
+              <button class="col-4 btn btn-secondary" type="reset">
+                reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

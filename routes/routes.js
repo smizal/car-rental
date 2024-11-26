@@ -3,17 +3,24 @@ const route = express.Router()
 const authController = require('../controllers/auth')
 const userController = require('../controllers/users')
 const categoryController = require('../controllers/categories')
+const carController = require('../controllers/cars')
 
 const multer = require('multer')
-var storage = multer.diskStorage({
+let storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './assets/uploads')
+    let path = 'users'
+    if (req.url.startsWith('/admin/categories')) {
+      path = 'categories'
+    } else if (req.url.startsWith('/admin/cars')) {
+      path = 'cars'
+    }
+    cb(null, `./assets/uploads/${path}`)
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname)
   }
 })
-var upload = multer({ storage: storage })
+let upload = multer({ storage: storage })
 
 // auth controller
 route.post('/auth/:userType/login', authController.login)
@@ -48,5 +55,15 @@ route.put(
   upload.single('photo'),
   categoryController.updating
 )
+
+// cars controller
+route.get('/admin/cars', carController.index)
+route.get('/admin/cars/add', carController.newForm)
+route.get('/admin/cars/edit/:carId', carController.editForm)
+route.post('/admin/cars', upload.single('photo'), carController.create)
+route.get('/admin/cars/report/:carId', carController.reports)
+route.delete('/admin/cars/:carId', carController.deleting)
+route.put('/admin/cars/status/:state/:carId', carController.status)
+route.put('/admin/cars/:carId', upload.single('photo'), carController.updating)
 
 module.exports = route

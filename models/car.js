@@ -30,6 +30,11 @@ const carSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.Decimal128,
       required: true
     },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      required: true
+    },
     adminAdded: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
