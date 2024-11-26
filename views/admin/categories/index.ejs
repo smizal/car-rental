@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <script defer src="/js/bootstrap.bundle.js"></script>
+    <title><%= siteInfo.siteName %> | Categories</title>
+  </head>
+  <body>
+    <%- userInfo.role==='admin'? include('../../partials/backend_navbar.ejs'):
+    include('../../partials/super_navbar.ejs') %>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <table id="myTable" class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Image</th>
+              <th scope="col">Name</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <% allCategories.forEach((category, index)=>{ %>
+            <tr>
+              <td><%= index+1 %></td>
+              <td>
+                <img src="/uploads/<%= category.photo %>" alt="" />
+              </td>
+              <td><%= category.name %></td>
+              <td>
+                <% if (category.status === 'active') { %>
+                <form
+                  action="/admin/categories/status/suspended/<%= category._id %>?_method=PUT"
+                  method="POST"
+                >
+                  <button type="submit">suspend</button>
+                </form>
+                <% } else { %>
+                <form
+                  action="/admin/categories/status/active/<%= category._id %>?_method=PUT"
+                  method="POST"
+                >
+                  <button type="submit">Activate</button>
+                </form>
+                <% } %>
+              </td>
+              <td>
+                <form
+                  action="/admin/categories/<%= category._id %>?_method=DELETE"
+                  method="post"
+                >
+                  <button type="submit">Delete</button>
+                </form>
+                <a href="/admin/categories/edit/<%= category._id %>">Edit</a>
+                <a href="/admin/categories/report/<%= category._id %>"
+                  >Report</a
+                >
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

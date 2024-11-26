@@ -7,7 +7,9 @@ const bcrypt = require('bcrypt')
 const userIndex = async (req, res) => {
   try {
     const siteInfo = await Info.findOne({})
-    const allUsers = await User.find({})
+    const allUsers = await User.find({
+      $or: [{ status: 'active' }, { status: 'suspended' }]
+    })
     res.render('admin/users/index.ejs', { siteInfo, allUsers })
   } catch (error) {
     return res.send(error)

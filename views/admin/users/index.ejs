@@ -29,13 +29,8 @@
               <td><%= user.name %></td>
               <td><%= user.role %></td>
               <td>
-                <% if (user.role != 'superadmin' && user.status === 'deleted') {
+                <% if (user.role != 'superadmin' && user.status === 'active') {
                 %>
-                <form>
-                  <button>deleted</button>
-                </form>
-                <% } else if (user.role != 'superadmin' && user.status ===
-                'active') { %>
                 <form
                   action="/admin/users/status/suspended/<%= user._id %>?_method=PUT"
                   method="POST"
