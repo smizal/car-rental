@@ -1,9 +1,12 @@
 const express = require('express')
+const app = express()
 const route = express.Router()
 const authController = require('../controllers/auth')
 const userController = require('../controllers/users')
 const categoryController = require('../controllers/categories')
 const carController = require('../controllers/cars')
+const customerController = require('../controllers/customers')
+const isSignedIn = require('../middleware/is-signed-in')
 
 const multer = require('multer')
 let storage = multer.diskStorage({
@@ -22,11 +25,14 @@ let storage = multer.diskStorage({
 })
 let upload = multer({ storage: storage })
 
+// frontend controller (customer controller)
+route.get('/', customerController.index)
+
 // auth controller
 route.post('/auth/:userType/login', authController.login)
 route.post('/auth/:userType/create', authController.create)
 route.get('/auth/:userType/:operation', authController.show)
-route.get('/admin', authController.index)
+route.get('/admin', isSignedIn, authController.index)
 
 // user controller
 route.get('/admin/users', userController.userIndex)
@@ -39,7 +45,7 @@ route.put('/admin/users/status/:state/:userId', userController.status)
 route.put('/admin/users/:userId', userController.updateUser)
 
 // categories controller
-route.get('/admin/categories', categoryController.index)
+route.get('/admin/categories', isSignedIn, categoryController.index)
 route.get('/admin/categories/add', categoryController.newForm)
 route.get('/admin/categories/edit/:catId', categoryController.editForm)
 route.post(

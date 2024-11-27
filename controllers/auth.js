@@ -1,6 +1,7 @@
 const { response } = require('express')
 const User = require('../models/user.js')
 const Info = require('../models/info.js')
+const Customer = require('../models/customer.js')
 
 const bcrypt = require('bcrypt')
 
@@ -51,7 +52,13 @@ const show = async (req, res) => {
 const login = async (req, res) => {
   try {
     const userType = req.params.userType
-    const userInDatabase = await User.findOne({ username: req.body.username })
+    if (userType === 'admin') {
+      const userInDatabase = await User.findOne({ username: req.body.username })
+    } else {
+      const userInDatabase = await Customer.findOne({
+        username: req.body.username
+      })
+    }
     if (!userInDatabase) {
       return res.send('Login failed. Please try again.')
     }
@@ -66,14 +73,24 @@ const login = async (req, res) => {
     }
 
     // Save any required data in session
-    req.session.userInfo = {
-      username: userInDatabase.username,
-      _id: userInDatabase._id,
-      role: userInDatabase.role
+    if (userType === 'admin') {
+      req.session.userInfo = {
+        username: userInDatabase.username,
+        _id: userInDatabase._id,
+        role: userInDatabase.role
+      }
+    } else {
+      req.session.userInfo = {
+        name: userInDatabase.name,
+        _id: userInDatabase._id
+      }
     }
     req.session.save(() => {
-      console.log(req.session.userInfo)
-      res.redirect(`/${userType}`)
+      if (userType === 'admin') {
+        res.redirect(`/${userType}`)
+      } else {
+        res.redirect(`/`)
+      }
     })
   } catch (error) {
     return res.send(error)
