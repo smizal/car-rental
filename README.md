@@ -28,7 +28,7 @@ Since the system is a **MEN** system, so **no hardware** prerequisites needed an
 
 ### 2. View the system
 
-[link to the system repo](https://smizal.github.io/ludo-game/)
+[link to the system](https://car-rental-vg56.onrender.com/)
 
 ### 3. System coding libraries
 
