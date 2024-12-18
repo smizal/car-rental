@@ -12,29 +12,30 @@ const bookingSchema = new mongoose.Schema(
     },
     startReport: {
       type: String,
-      required: true
+      required: false
     },
     endReport: {
       type: String,
-      required: true
-    },
-    model: {
-      type: String,
-      required: true
+      required: false
     },
     price: {
       type: mongoose.Schema.Types.Decimal128,
-      required: true
+      required: false
     },
     customer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Customer',
       required: true
     },
+    car: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Car',
+      required: true
+    },
     adminAdded: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true
+      required: false
     },
     adminUpdated: {
       type: mongoose.Schema.Types.ObjectId,
@@ -43,7 +44,7 @@ const bookingSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['accepted', 'rejected', 'returned', 'deleted'],
+      enum: ['new', 'accepted', 'rejected', 'returned', 'deleted'],
       required: true
     },
     notes: {

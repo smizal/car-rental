@@ -13,7 +13,7 @@ const index = async (req, res) => {
     }).populate('category')
     res.render('admin/cars/index.ejs', { siteInfo, allCars })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -24,7 +24,7 @@ const newForm = async (req, res) => {
 
     res.render('admin/cars/new.ejs', { siteInfo, allCategories })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -36,7 +36,7 @@ const editForm = async (req, res) => {
 
     res.render('admin/cars/edit.ejs', { siteInfo, allCategories, car })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -74,7 +74,7 @@ const create = async (req, res) => {
     // redirect to users list
     res.redirect('/admin/cars')
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -86,7 +86,7 @@ const deleting = async (req, res) => {
     })
     res.redirect(`/admin/cars`)
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -114,7 +114,7 @@ const updating = async (req, res) => {
     // redirect to users list
     res.redirect('/admin/cars')
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -123,7 +123,7 @@ const reports = async (req, res) => {
     const siteInfo = await Info.findOne({})
     return res.send('report page')
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -135,7 +135,7 @@ const status = async (req, res) => {
     })
     res.redirect(`/admin/cars`)
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 

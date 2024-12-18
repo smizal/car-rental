@@ -45,20 +45,20 @@ const show = async (req, res) => {
       return res.send('show 404 error page')
     }
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
 const login = async (req, res) => {
   try {
     const userType = req.params.userType
-    if (userType === 'admin') {
-      const userInDatabase = await User.findOne({ username: req.body.username })
-    } else {
-      const userInDatabase = await Customer.findOne({
+    const userInDatabase = await User.findOne({ username: req.body.username })
+    if (userType != 'admin') {
+      userInDatabase = await Customer.findOne({
         username: req.body.username
       })
     }
+    console.log('userInDatabase', userInDatabase)
     if (!userInDatabase) {
       return res.send('Login failed. Please try again.')
     }
@@ -68,12 +68,14 @@ const login = async (req, res) => {
       req.body.password,
       userInDatabase.password
     )
+
     if (!validPassword) {
       return res.send('Login failed. Please try again.')
     }
 
     // Save any required data in session
     if (userType === 'admin') {
+      console.log('admin session')
       req.session.userInfo = {
         username: userInDatabase.username,
         _id: userInDatabase._id,
@@ -87,13 +89,14 @@ const login = async (req, res) => {
     }
     req.session.save(() => {
       if (userType === 'admin') {
+        console.log('admin redirect')
         res.redirect(`/${userType}`)
       } else {
         res.redirect(`/`)
       }
     })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -121,13 +124,13 @@ const create = async (req, res) => {
       res.redirect('/admin')
     })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
 const index = async (req, res) => {
   const siteInfo = await Info.findOne({})
-  res.render('admin/index.ejs', { siteInfo })
+  res.render('error.ejs')
 }
 
 module.exports = { login, create, show, index }

@@ -12,7 +12,7 @@ const index = async (req, res) => {
     })
     res.render('admin/categories/index.ejs', { siteInfo, allCategories })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -21,7 +21,7 @@ const newForm = async (req, res) => {
     const siteInfo = await Info.findOne({})
     res.render('admin/categories/new.ejs', { siteInfo })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -31,7 +31,7 @@ const editForm = async (req, res) => {
     const category = await Category.findById(req.params.catId)
     res.render('admin/categories/edit.ejs', { siteInfo, category })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -69,7 +69,7 @@ const create = async (req, res) => {
     // redirect to users list
     res.redirect('/admin/categories')
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -81,7 +81,7 @@ const deleting = async (req, res) => {
     })
     res.redirect(`/admin/categories`)
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -109,7 +109,7 @@ const updating = async (req, res) => {
     // redirect to users list
     res.redirect('/admin/categories')
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -118,7 +118,7 @@ const reports = async (req, res) => {
     const siteInfo = await Category.findOne({})
     return res.send('update page')
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -130,7 +130,7 @@ const status = async (req, res) => {
     })
     res.redirect(`/admin/categories`)
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 

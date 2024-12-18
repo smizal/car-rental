@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <script defer src="/js/bootstrap.bundle.js"></script>
+    <title><%= siteInfo.siteName %> | Request</title>
+  </head>
+  <body style="background-color: var(--bs-gray-500)">
+    <%- include('../partials/frontend_navbar.ejs') %>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-4 bg-body-secondary p-3 rounded">
+          <form action="/request/<%= car._id %>" method="POST">
+            <div class="h1 mb-4">Request a Car for rent</div>
+            <div class="mb-3">
+              <div class="form-floating">
+                <input
+                  disabled
+                  type="text"
+                  class="form-control"
+                  id="carName"
+                  name="carName"
+                  placeholder="Car Name"
+                  value="<%= car.name %>"
+                />
+                <label for="carName">Car Name</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  placeholder="Customer name"
+                  required
+                />
+                <label for="name">Customer Name</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cpr"
+                  name="cpr"
+                  placeholder="Customer CPR"
+                  required
+                />
+                <label for="cpr">Customer CPR</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-floating">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Customer email"
+                  required
+                />
+                <label for="email">Customer Email</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-floating">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="phone"
+                  name="phone"
+                  placeholder="Customer phone"
+                  required
+                />
+                <label for="phone">Customer Phone</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  name="address"
+                  placeholder="Customer address"
+                  required
+                />
+                <label for="address">Customer Address</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-floating">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="startDate"
+                  name="startDate"
+                  placeholder="Start Date"
+                  required
+                />
+                <label for="startDate">Start Date</label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-floating">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="returnDate"
+                  name="returnDate"
+                  placeholder="Return Date"
+                  required
+                />
+                <label for="returnDate">Return Date</label>
+              </div>
+            </div>
+
+            <div class="row mt-5 justify-content-around">
+              <button class="col-4 btn btn-primary" type="submit">
+                Add Request
+              </button>
+              <button class="col-4 btn btn-secondary" type="reset">
+                reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+  </body>
+</html>

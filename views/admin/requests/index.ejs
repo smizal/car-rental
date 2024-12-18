@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <script defer src="/js/bootstrap.bundle.js"></script>
+    <title><%= siteInfo.siteName %> | Requests</title>
+  </head>
+  <body>
+    <%- userInfo.role==='admin'? include('../../partials/backend_navbar.ejs'):
+    include('../../partials/super_navbar.ejs') %>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <table id="myTable" class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="col-1">#</th>
+              <th scope="col" class="col-2">Customer</th>
+              <th scope="col" class="col-3">Car</th>
+              <th scope="col" class="col-3">Start Date</th>
+              <th scope="col" class="col-1">Return Date</th>
+              <th scope="col" class="col-2">Actions/Status</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <% allRequests.forEach((request, index)=>{ %>
+            <tr>
+              <td><%= index+1 %></td>
+              <td><%= request.customer.name %></td>
+              <td><%= request.car.name %></td>
+              <td><%= request.startDate %></td>
+              <td><%= request.returnDate %></td>
+              <td>
+                <% if (request.status === 'new') { %>
+                <form
+                  action="/admin/requests/accepted/<%= request._id %>?_method=PUT"
+                  method="POST"
+                >
+                  <button class="btn btn-primary" type="submit">Accept</button>
+                </form>
+                <form
+                  action="/admin/requests/rejected/<%= request._id %>?_method=PUT"
+                  method="POST"
+                >
+                  <button class="btn btn-primary" type="submit">Reject</button>
+                </form>
+                <% } else { %> <%= request.status %> <% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

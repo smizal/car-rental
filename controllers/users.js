@@ -12,7 +12,7 @@ const userIndex = async (req, res) => {
     })
     res.render('admin/users/index.ejs', { siteInfo, allUsers })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -21,7 +21,7 @@ const newUserForm = async (req, res) => {
     const siteInfo = await Info.findOne({})
     res.render('admin/users/new.ejs', { siteInfo })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -31,7 +31,7 @@ const updateUserForm = async (req, res) => {
     const user = await User.findById(req.params.userId)
     res.render('admin/users/edit.ejs', { siteInfo, user })
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -57,7 +57,7 @@ const createUser = async (req, res) => {
     // redirect to users list
     res.redirect('/admin/users')
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -69,7 +69,7 @@ const deleteUser = async (req, res) => {
     })
     res.redirect(`/admin/users`)
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -93,7 +93,7 @@ const updateUser = async (req, res) => {
     // redirect to users list
     res.redirect('/admin/users')
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -102,7 +102,7 @@ const userReport = async (req, res) => {
     const siteInfo = await Info.findOne({})
     return res.send('update page')
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 
@@ -114,7 +114,7 @@ const status = async (req, res) => {
     })
     res.redirect(`/admin/users`)
   } catch (error) {
-    return res.send(error)
+    res.render('error.ejs')
   }
 }
 

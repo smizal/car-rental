@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <script defer src="/js/bootstrap.bundle.js"></script>
+    <title><%= siteInfo.siteName %> | Index</title>
+  </head>
+  <body style="background-color: var(--bs-gray-500)">
+    <%- include('../partials/frontend_navbar.ejs') %>
+    <div class="container text-center">
+      <div class="mt-5 row text-black">
+        <h1>All Cars Listings</h1>
+      </div>
+      <div class="row align-items-start align-items-center">
+        <% allCars.forEach((car) =>{ %>
+        <div class="col-3 mb-4">
+          <div class="card">
+            <img
+              style="max-height: 150px"
+              src="/uploads/cars/<%= car.photo %>"
+              class="card-img-top img-fluid"
+              alt="<%= car.name %> car photo"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%= car.name %></h5>
+              <p class="card-text"><%= car.description %></p>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  Category: <%= car.category.name %>
+                </li>
+                <li class="list-group-item">Color: <%= car.color %></li>
+                <li class="list-group-item">Model: <%= car.model %></li>
+                <li class="list-group-item">No. of Seats: <%= car.seats %></li>
+                <li class="list-group-item">price/day: <%= car.price %></li>
+              </ul>
+              <a href="/request/<%=car._id%>" class="btn btn-primary"
+                >Request</a
+              >
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+  </body>
+</html>
